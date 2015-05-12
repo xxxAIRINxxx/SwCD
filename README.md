@@ -15,7 +15,11 @@ http://jamesonquave.com/blog/core-data-in-swift-tutorial-part-1/
 
 ```
 
-Because of the way Swift modules work, we need to make one modification to the core data model. In the field “Class” under the data model inspector for our entity, LogItem, we need to specify the project name as a prefix to the class name. So instead of just specifying “LogItem” as the class, it needs to say “MyLog.LogItem”, assuming your app is called “MyLog”.
+Because of the way Swift modules work, we need to make one modification to the core data model.
+In the field “Class” under the data model inspector for our entity, LogItem,
+we need to specify the project name as a prefix to the class name.
+So instead of just specifying “LogItem” as the class,
+it needs to say “MyLog.LogItem”, assuming your app is called “MyLog”.
 
 ```
 
