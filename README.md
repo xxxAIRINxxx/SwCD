@@ -25,6 +25,16 @@ it needs to say “MyLog.LogItem”, assuming your app is called “MyLog”.
 
 ## Usage
 
+### Setup
+
+```swift
+
+// DataModel is your dataModel (DataModel.xcdatamodeld)
+SwCD.setup("DataModel", dbRootDirPath: nil, dbDirName: nil, dbName: nil)
+
+
+```
+
 ### Create Entity
 
 ```swift
