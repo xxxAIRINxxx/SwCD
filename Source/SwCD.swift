@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-typealias SaveCompletionHandler = (Bool, NSError?) -> Void
+public typealias SaveCompletionHandler = (Bool, NSError?) -> Void
 
 public class SwCD {
     
@@ -150,7 +150,7 @@ private class Synchronized {
 
 // MARK: - NSManagedObjectContext Extensions
 
-extension NSManagedObjectContext {
+public extension NSManagedObjectContext {
     
     class func mainQueueContext() -> NSManagedObjectContext {
         let lock = Synchronized(self)
@@ -284,7 +284,7 @@ extension NSManagedObjectContext {
 
 // MARK: - NSPersistentStoreCoordinator Extensions
 
-extension NSPersistentStoreCoordinator {
+public extension NSPersistentStoreCoordinator {
     func defaultCoordinator() -> NSPersistentStoreCoordinator {
         return SwCD.sharedInstance.defaultCoordinator
     }
@@ -294,12 +294,12 @@ extension NSPersistentStoreCoordinator {
 
 // @see : http://stackoverflow.com/questions/24537238/swift-return-array-of-type-self
 
-protocol NamedManagedObject {
+public protocol NamedManagedObject {
     static func entityName() -> String
 }
 
 extension NSManagedObject : NamedManagedObject {
-    class func entityName() -> String {
+    public class func entityName() -> String {
         return NSStringFromClass(self).componentsSeparatedByString(".").last!
     }
     
@@ -311,7 +311,7 @@ extension NSManagedObject : NamedManagedObject {
 
 // MARK: - SwCD Extensions
 
-extension SwCD {
+public extension SwCD {
     
     class func createFetchRequest<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, context: NSManagedObjectContext) -> NSFetchRequest {
         let request = NSFetchRequest()
