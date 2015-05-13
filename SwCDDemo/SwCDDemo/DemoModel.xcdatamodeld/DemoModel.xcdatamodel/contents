@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Item" representedClassName="SwCD.Item" syncable="YES">
+    <entity name="Item" representedClassName="SwCDDemo.Item" syncable="YES">
         <attribute name="created" attributeType="Date" syncable="YES"/>
         <attribute name="display" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" defaultValueString="name" syncable="YES"/>
         <attribute name="sorted" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="TestItem" representedClassName="SwCDTests.TestItem" parentEntity="Item" syncable="YES"/>
     <elements>
         <element name="Item" positionX="-27" positionY="18" width="128" height="120"/>
-        <element name="TestItem" positionX="18" positionY="90" width="128" height="45"/>
     </elements>
 </model>

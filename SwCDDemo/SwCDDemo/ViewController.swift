@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwCD
 
 class ViewController: UIViewController {
     

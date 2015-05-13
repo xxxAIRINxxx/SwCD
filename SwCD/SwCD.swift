@@ -104,7 +104,12 @@ public class SwCD {
             assert(true, "need set model name")
         }
         
-        let modelURL = NSBundle.mainBundle().URLForResource(self.modelName!, withExtension: "momd")
+        
+        var modelURL = NSBundle.mainBundle().URLForResource(self.modelName!, withExtension: "momd")
+        // need unit test
+        if modelURL == nil {
+           modelURL = NSBundle(forClass: SwCD.self).URLForResource(self.modelName!, withExtension: "momd")
+        }
         var model = NSManagedObjectModel(contentsOfURL: modelURL!)
         return model!
     }()

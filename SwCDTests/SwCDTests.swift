@@ -18,7 +18,7 @@ class SwCDTests: XCTestCase {
         super.setUp()
         
         dispatch_once(&onceToken) {
-            SwCD.setup("DemoModel", dbRootDirPath: nil, dbDirName: "Test", dbName: nil)
+            SwCD.setup("TestModel", dbRootDirPath: nil, dbDirName: "Test", dbName: nil)
         }
     }
     
