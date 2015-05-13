@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint ARNAlert.podspec' to ensure this is a
+# Be sure to run `pod lib lint SwCD.podspec' to ensure this is a
 # valid spec and remove all comments before submitting the spec.
 #
 # Any lines starting with a # are optional, but encouraged

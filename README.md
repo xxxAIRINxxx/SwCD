@@ -44,11 +44,11 @@ let entity = SwCD.createEntity(Item.self)
 
 ```
 
-### Insert Entity
+### Insert
 
 ```swift
 
-SwCD.insert(TestItem.self, entities: [entity], completion: { success, error in
+SwCD.insert(Item.self, entities: [entity], completion: { success, error in
   // after call saveWithBlockAndWait function
   if success == true {
       // do something
@@ -63,8 +63,8 @@ SwCD.insert(TestItem.self, entities: [entity], completion: { success, error in
 
 ```swift
 
-let predicate = NSPredicate(format: "name == %@", argumentArray: ["test"])
-// Item is NSManagedObject Subclass
+let predicate = NSPredicate(format: "name == %@", argumentArray: ["bobo james"])
+
 // results is [Item]
 let results = SwCD.find(Item.self, predicate: predicate, sortDescriptors: nil, fetchLimit: nil)
 
@@ -74,7 +74,6 @@ let results = SwCD.find(Item.self, predicate: predicate, sortDescriptors: nil, f
 
 ```swift
 
-// Item is NSManagedObject Subclass
 // results is [Item]
 let results = SwCD.all(Item.self, sortDescriptors: nil)
 
@@ -84,7 +83,6 @@ let results = SwCD.all(Item.self, sortDescriptors: nil)
 
 ```swift
 
-// Item is NSManagedObject Subclass
 // results is Item?
 let result = SwCD.findFirst(Item.self, attribute: "identifier == %@", values: ["1"])
 
@@ -94,7 +92,6 @@ let result = SwCD.findFirst(Item.self, attribute: "identifier == %@", values: ["
 
 ```swift
 
-// Item is NSManagedObject Subclass
 // entity is Item?
 var entity = SwCD.findFirst(Item.self, attribute: "identifier == %@", values: ["1"])
 entity.name = "after"
@@ -107,7 +104,6 @@ SwCD.update(Item.self, entities: [entity], completion: nil)
 
 ```swift
 
-// Item is NSManagedObject Subclass
 // entity is Item?
 var entity = SwCD.findFirst(Item.self, attribute: "identifier == %@", values: ["1"])
 
@@ -129,6 +125,7 @@ SwCD.deleteAll(Item.self, completion: nil)
 * iOS 8.0+
 * Swift lang (1.2)
 * ARC
+* CocoaPods 0.36+
 
 ## Installation
 
