@@ -103,7 +103,7 @@ class SwCDTests: XCTestCase {
         entity3.identifier = "dummy"
         SwCD.insert(TestItem.self, entities: [entity3], completion: nil)
         
-        let result = SwCD.findFirst(TestItem.self, attribute: "identifier == %@", values: ["1"])
+        let result = SwCD.findFirst(TestItem.self, predicate: NSPredicate(format: "identifier == %@", argumentArray: ["1"]))
         XCTAssert(result != nil, "")
         XCTAssert(result!.identifier == "1", "")
     }

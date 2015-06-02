@@ -349,7 +349,7 @@ public extension SwCD {
         return result
     }
     
-    class func all<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, sortDescriptors: [AnyObject]?) -> [T] {
+    class func all<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, sortDescriptors: [NSSortDescriptor]?) -> [T] {
         let context = NSManagedObjectContext.contextForCurrentThread()
         let request = self.createFetchRequest(entityType, context: context)
         if let _sortDescriptors = sortDescriptors {
@@ -359,7 +359,7 @@ public extension SwCD {
         return self.executeFetch(entityType, request: request, inContext: context)
     }
     
-    class func find<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, predicate: NSPredicate?, sortDescriptors: [AnyObject]?, fetchLimit: Int?) -> [T] {
+    class func find<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int?) -> [T] {
         let context = NSManagedObjectContext.contextForCurrentThread()
         var request = self.createFetchRequest(entityType, context: context)
         
@@ -378,9 +378,7 @@ public extension SwCD {
         return self.executeFetch(entityType, request: request, inContext: context)
     }
     
-    class func findFirst<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, attribute: String, values: [AnyObject]) -> T? {
-        let predicate = NSPredicate(format: attribute, argumentArray: values)
-        
+    class func findFirst<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, predicate: NSPredicate?) -> T? {
         let result = self.find(entityType, predicate: predicate, sortDescriptors: nil, fetchLimit: 1)
         
         if result.count > 0 {
@@ -426,6 +424,15 @@ public extension SwCD {
         NSManagedObjectContext.saveWithBlockAndWait({saveContext in
             for entityObj in result {
                 entityObj.managedObjectContext?.deleteObject(entityObj)
+            }
+            },
+            completion: completion)
+    }
+    
+    class func save(block: (NSManagedObjectContext -> Void)?, completion: SaveCompletionHandler?) {
+        NSManagedObjectContext.saveWithBlockAndWait({context in
+            if let _block = block {
+                _block(context)
             }
             },
             completion: completion)
