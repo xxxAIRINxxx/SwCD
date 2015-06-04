@@ -241,9 +241,7 @@ public extension NSManagedObjectContext {
     class func saveWithBlockAndWait(block: (NSManagedObjectContext -> Void)?, completion: SaveCompletionHandler?) {
         let localContext = NSManagedObjectContext.contextForCurrentThread()
         localContext.performBlockAndWait({
-            if let _block = block {
-                _block(localContext)
-            }
+            block?(localContext)
             localContext.saveAndCompletion(completion)
         })
     }
@@ -252,9 +250,7 @@ public extension NSManagedObjectContext {
         if self.hasChanges == false {
             println("SwCD Save : No Changes")
             dispatch_async(dispatch_get_main_queue(), {
-                if let _completion = completion {
-                    _completion(false, nil)
-                }
+                completion?(false, nil)
             })
             return
         }
@@ -269,16 +265,12 @@ public extension NSManagedObjectContext {
                     _parentContext.saveAndCompletion(completion)
                 } else {
                     dispatch_async(dispatch_get_main_queue(), {
-                        if let _completion = completion {
-                            _completion(true, nil)
-                        }
+                        completion?(true, nil)
                     })
                 }
             } else {
                 dispatch_async(dispatch_get_main_queue(), {
-                    if let _completion = completion {
-                        _completion(false, error)
-                    }
+                    completion?(false, error)
                 })
             }
         }
@@ -328,6 +320,7 @@ public extension SwCD {
     class func createEntity<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type) -> T {
         let context = NSManagedObjectContext.contextForCurrentThread()
         let entity = entityType(context: context)
+        
         return entity
     }
     
@@ -431,9 +424,7 @@ public extension SwCD {
     
     class func save(block: (NSManagedObjectContext -> Void)?, completion: SaveCompletionHandler?) {
         NSManagedObjectContext.saveWithBlockAndWait({context in
-            if let _block = block {
-                _block(context)
-            }
+            block?(context)
             },
             completion: completion)
     }
