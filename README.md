@@ -5,7 +5,14 @@
 [![License](https://img.shields.io/cocoapods/l/SwCD.svg?style=flat)](http://cocoadocs.org/docsets/SwCD)
 [![Platform](https://img.shields.io/cocoapods/p/SwCD.svg?style=flat)](http://cocoadocs.org/docsets/SwCD)
 
-Lightweight CoreData library written in Swift.
+Lightweight CoreData library. written in Swift.
+
+## Requirements
+
+* Xcode 7.0
+* iOS 8.0+
+* Swift 2.0
+* CocoaPods 0.36+
 
 ## Use CoreData In Swift
 
@@ -120,13 +127,6 @@ SwCD.deleteAll(Item.self, completion: nil)
 
 ```
 
-## Requirements
-
-* iOS 8.0+
-* Swift lang (1.2)
-* ARC
-* CocoaPods 0.36+
-
 ## Installation
 
 ARNAlert is available through [CocoaPods](http://cocoapods.org). To install
@@ -136,4 +136,4 @@ it, simply add the following line to your Podfile:
 
 ## License
 
-SwCD is available under the MIT license. See the LICENSE file for more info.
+MIT license. See the LICENSE file for more info.

@@ -43,12 +43,12 @@ class SwCDTests: XCTestCase {
     func testExecuteFetch() {
         XCTAssert(SwCD.all(TestItem.self, sortDescriptors: nil).count == 0, "")
         
-        var entity = self.dynamicType.createTestItem()
+        let entity = self.dynamicType.createTestItem()
         entity.name = "test"
         SwCD.insert(TestItem.self, entities: [entity], completion: nil)
         
         let context = NSManagedObjectContext.contextForCurrentThread()
-        var request = SwCD.createFetchRequest(TestItem.self, context: context)
+        let request = SwCD.createFetchRequest(TestItem.self, context: context)
         request.predicate = NSPredicate(format: "name == %@", argumentArray: ["test"])
         let results = SwCD.executeFetch(TestItem.self, request: request, inContext: context)
         
@@ -62,17 +62,17 @@ class SwCDTests: XCTestCase {
     func testFind() {
         XCTAssert(SwCD.all(TestItem.self, sortDescriptors: nil).count == 0, "")
         
-        var entity = self.dynamicType.createTestItem()
+        let entity = self.dynamicType.createTestItem()
         entity.name = "test"
         entity.identifier = "1"
         SwCD.insert(TestItem.self, entities: [entity], completion: nil)
         
-        var entity2 = self.dynamicType.createTestItem()
+        let entity2 = self.dynamicType.createTestItem()
         entity2.name = "test"
         entity2.identifier = "1"
         SwCD.insert(TestItem.self, entities: [entity2], completion: nil)
         
-        var entity3 = self.dynamicType.createTestItem()
+        let entity3 = self.dynamicType.createTestItem()
         entity3.name = "dummy"
         entity3.identifier = "dummy"
         SwCD.insert(TestItem.self, entities: [entity3], completion: nil)
@@ -88,17 +88,17 @@ class SwCDTests: XCTestCase {
     func testFindFirst() {
         XCTAssert(SwCD.all(TestItem.self, sortDescriptors: nil).count == 0, "")
         
-        var entity = self.dynamicType.createTestItem()
+        let entity = self.dynamicType.createTestItem()
         entity.name = "test"
         entity.identifier = "1"
         SwCD.insert(TestItem.self, entities: [entity], completion: nil)
         
-        var entity2 = self.dynamicType.createTestItem()
+        let entity2 = self.dynamicType.createTestItem()
         entity2.name = "test"
         entity2.identifier = "2"
         SwCD.insert(TestItem.self, entities: [entity2], completion: nil)
         
-        var entity3 = self.dynamicType.createTestItem()
+        let entity3 = self.dynamicType.createTestItem()
         entity3.name = "dummy"
         entity3.identifier = "dummy"
         SwCD.insert(TestItem.self, entities: [entity3], completion: nil)
@@ -127,7 +127,7 @@ class SwCDTests: XCTestCase {
     func testUpdate() {
         XCTAssert(SwCD.all(TestItem.self, sortDescriptors: nil).count == 0, "")
         
-        var entity = self.dynamicType.createTestItem()
+        let entity = self.dynamicType.createTestItem()
         entity.name = "test"
         SwCD.insert(TestItem.self, entities: [entity], completion: nil)
         
@@ -149,7 +149,7 @@ class SwCDTests: XCTestCase {
             self.dynamicType.createTestItem(),
             self.dynamicType.createTestItem()], completion: nil)
         
-        var entity = self.dynamicType.createTestItem()
+        let entity = self.dynamicType.createTestItem()
         entity.name = "test"
         let identifier = entity.identifier
         SwCD.insert(TestItem.self, entities: [entity], completion: nil)
@@ -180,7 +180,7 @@ class SwCDTests: XCTestCase {
     }
     
     class func createTestItem() -> TestItem {
-        var entity =  SwCD.createEntity(TestItem.self)
+        let entity =  SwCD.createEntity(TestItem.self)
         entity.identifier = NSUUID().UUIDString
         
         return entity

@@ -19,7 +19,7 @@ public class SwCD {
         SwCD.sharedInstance.modelName = modelName
         
         if let _dbRootDirPath = dbRootDirPath {
-            SwCD.sharedInstance.dbRootDirPath = NSSearchPathForDirectoriesInDomains(_dbRootDirPath, .UserDomainMask, true)[0] as! String
+            SwCD.sharedInstance.dbRootDirPath = NSSearchPathForDirectoriesInDomains(_dbRootDirPath, .UserDomainMask, true)[0] 
         }
         
         if let _dbDirName = dbDirName {
@@ -38,7 +38,7 @@ public class SwCD {
     private static let ManagedObjectContextKey : String = "SwCDManagedObjectContextKey"
     
     private var modelName : String?
-    private var dbRootDirPath : String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+    private var dbRootDirPath : String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] 
     private var dbDirName : String = "SwCD"
     private var dbName : String = "SwCDDB"
     
@@ -63,29 +63,44 @@ public class SwCD {
         var coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.defaultManagedObjectModel)
         
         var error: NSError?
-        let store = coordinator.addPersistentStoreWithType(
-            NSSQLiteStoreType,
-            configuration: nil,
-            URL: self.storeURL(),
-            options: nil,
-            error: &error
-        )
+        let store: NSPersistentStore?
+        do {
+            store = try coordinator.addPersistentStoreWithType(
+                        NSSQLiteStoreType,
+                        configuration: nil,
+                        URL: self.storeURL(),
+                        options: nil)
+        } catch var error1 as NSError {
+            error = error1
+            store = nil
+        } catch {
+            fatalError()
+        }
         
         if let _error = error {
             // re create
             let isMigrationError = (_error.code == NSPersistentStoreIncompatibleVersionHashError) || (_error.code == NSMigrationMissingSourceModelError)
             if _error.domain == NSCocoaErrorDomain && isMigrationError == true {
-                NSFileManager.defaultManager().removeItemAtURL(self.storeURL(), error: nil)
+                do {
+                    try NSFileManager.defaultManager().removeItemAtURL(self.storeURL())
+                } catch _ {
+                }
                 var reError: NSError?
-                let reStore = coordinator.addPersistentStoreWithType(
-                    NSSQLiteStoreType,
-                    configuration: nil,
-                    URL: self.storeURL(),
-                    options: nil,
-                    error: &reError
-                )
+                let reStore: NSPersistentStore?
+                do {
+                    reStore = try coordinator.addPersistentStoreWithType(
+                                        NSSQLiteStoreType,
+                                        configuration: nil,
+                                        URL: self.storeURL(),
+                                        options: nil)
+                } catch var error as NSError {
+                    reError = error
+                    reStore = nil
+                } catch {
+                    fatalError()
+                }
                 if reStore == nil {
-                    println("create persistentStores error : " + reError!.localizedDescription)
+                    print("create persistentStores error : " + reError!.localizedDescription)
                     abort()
                 }
             }
@@ -93,7 +108,7 @@ public class SwCD {
         
         let persistentStores = coordinator.persistentStores
         if persistentStores.count > 0 && self.defaultPersistentStore == nil {
-            self.defaultPersistentStore = persistentStores[0] as? NSPersistentStore
+            self.defaultPersistentStore = persistentStores[0]
         }
         
         return coordinator
@@ -121,35 +136,23 @@ public class SwCD {
     private func storeURL() -> NSURL {
         let dirPath = self.dbRootDirPath + "/" + self.dbDirName
         self.createDirectoryIfNeeded(dirPath)
-        let filePath = dirPath.stringByAppendingPathComponent(self.dbName + ".sqlite")
-        return NSURL(fileURLWithPath: filePath)!
+        let filePath = (dirPath as NSString).stringByAppendingPathComponent(self.dbName + ".sqlite")
+        return NSURL(fileURLWithPath: filePath)
     }
     
     private func createDirectoryIfNeeded(path: String) -> Bool {
         if NSFileManager.defaultManager().fileExistsAtPath(path) == false {
-            var error: NSError?
-            return NSFileManager.defaultManager().createDirectoryAtPath(path,
-                withIntermediateDirectories: true,
-                attributes: nil,
-                error: &error)
+            do {
+                try NSFileManager.defaultManager().createDirectoryAtPath(path,
+                                withIntermediateDirectories: true,
+                                attributes: nil)
+                return true
+            } catch _ {
+                return false
+            }
         } else {
             return true
         }
-    }
-}
-
-// MARK: - Synchronized
-
-private class Synchronized {
-    let object : AnyObject
-    
-    init(_ obj : AnyObject) {
-        object = obj
-        objc_sync_enter(object)
-    }
-    
-    deinit {
-        objc_sync_exit(object)
     }
 }
 
@@ -158,12 +161,10 @@ private class Synchronized {
 public extension NSManagedObjectContext {
     
     class func mainQueueContext() -> NSManagedObjectContext {
-        let lock = Synchronized(self)
         return SwCD.sharedInstance.mainQueueContext
     }
     
     class func rootSaveingContext() -> NSManagedObjectContext {
-        let lock = Synchronized(self)
         return SwCD.sharedInstance.rootSaveingContext
     }
     
@@ -178,7 +179,7 @@ public extension NSManagedObjectContext {
         if NSThread.isMainThread() == true {
             return NSManagedObjectContext.mainQueueContext()
         } else {
-            var threads = NSThread.currentThread().threadDictionary
+            let threads = NSThread.currentThread().threadDictionary
             var threadContext = threads[SwCD.ManagedObjectContextKey] as! NSManagedObjectContext?
             if threadContext == nil {
                 threadContext = NSManagedObjectContext.contextWithParent(NSManagedObjectContext.rootSaveingContext())
@@ -228,7 +229,14 @@ public extension NSManagedObjectContext {
         
         if insertedObjects.count > 0 {
             var error: NSError?
-            let success = context.obtainPermanentIDsForObjects(insertedObjects.allObjects, error: &error)
+            let success: Bool
+            do {
+                try context.obtainPermanentIDsForObjects(insertedObjects.map(){($0 as! NSManagedObject)})
+                success = true
+            } catch let error1 as NSError {
+                error = error1
+                success = false
+            }
             
             if success == false {
                 assert(true, "contextWillSave error : " + error!.localizedDescription)
@@ -248,7 +256,7 @@ public extension NSManagedObjectContext {
     
     func saveAndCompletion(completion: SaveCompletionHandler?) {
         if self.hasChanges == false {
-            println("SwCD Save : No Changes")
+            print("SwCD Save : No Changes")
             dispatch_async(dispatch_get_main_queue(), {
                 completion?(false, nil)
             })
@@ -258,7 +266,16 @@ public extension NSManagedObjectContext {
         let saveBlock: Void -> Void = {
             var error: NSError?
             
-            let success = self.save(&error)
+            let success: Bool
+            do {
+                try self.save()
+                success = true
+            } catch let error1 as NSError {
+                error = error1
+                success = false
+            } catch {
+                fatalError()
+            }
             
             if success == true {
                 if let _parentContext = self.parentContext {
@@ -319,7 +336,8 @@ public extension SwCD {
     
     class func createEntity<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type) -> T {
         let context = NSManagedObjectContext.contextForCurrentThread()
-        let entity = entityType(context: context)
+        let description = NSEntityDescription.entityForName(entityType.entityName(), inManagedObjectContext: context)!
+        let entity = entityType.init(entity: description, insertIntoManagedObjectContext: context)
         
         return entity
     }
@@ -332,8 +350,12 @@ public extension SwCD {
         }
         
         inContext.performBlockAndWait({
-            var error: NSError?
-            let results = inContext.executeFetchRequest(request, error: &error)
+            let results: [AnyObject]?
+            do {
+                results = try inContext.executeFetchRequest(request)
+            } catch {
+                fatalError()
+            }
             if results != nil {
                 result = results as! [T]
             }
@@ -354,7 +376,7 @@ public extension SwCD {
     
     class func find<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int?) -> [T] {
         let context = NSManagedObjectContext.contextForCurrentThread()
-        var request = self.createFetchRequest(entityType, context: context)
+        let request = self.createFetchRequest(entityType, context: context)
         
         if let _predicate = predicate {
             request.predicate = _predicate
@@ -392,8 +414,11 @@ public extension SwCD {
     class func update<T: NSManagedObject where T: NamedManagedObject>(entityType: T.Type, entities: [T], completion: SaveCompletionHandler?) {
         NSManagedObjectContext.saveWithBlockAndWait({context in
             for entityObj in entities {
-                var error: NSError?
-                entityObj.managedObjectContext?.save(&error)
+                do {
+                    try entityObj.managedObjectContext?.save()
+                } catch {
+                    fatalError()
+                }
             }
             },
             completion: completion)
@@ -412,7 +437,7 @@ public extension SwCD {
         let context = NSManagedObjectContext.contextForCurrentThread()
         let request = self.createFetchRequest(entityType, context: context)
         
-        var result = self.executeFetch(entityType, request: request, inContext: context)
+        let result = self.executeFetch(entityType, request: request, inContext: context)
         
         NSManagedObjectContext.saveWithBlockAndWait({saveContext in
             for entityObj in result {
