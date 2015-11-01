@@ -3,15 +3,17 @@
 [![CI Status](http://img.shields.io/travis/Airin/SwCD.svg?style=flat)](https://travis-ci.org/xxxAIRINxxx/SwCD)
 [![Version](https://img.shields.io/cocoapods/v/SwCD.svg?style=flat)](http://cocoadocs.org/docsets/SwCD)
 [![License](https://img.shields.io/cocoapods/l/SwCD.svg?style=flat)](http://cocoadocs.org/docsets/SwCD)
-[![Platform](https://img.shields.io/cocoapods/p/SwCD.svg?style=flat)](http://cocoadocs.org/docsets/SwCD)
+[![Swift 2.1](https://img.shields.io/badge/Swift-2.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://developer.apple.com/swift/)
+[![Xcode 7.1+](https://img.shields.io/badge/Xcode-7.1+-blue.svg?style=flat)](https://developer.apple.com/swift/)
 
 Lightweight CoreData library. written in Swift.
 
 ## Requirements
 
-* Xcode 7.0
+* Xcode 7.1+
 * iOS 8.0+
-* Swift 2.0
+* Swift 2.1
 * CocoaPods 0.36+
 
 ## Use CoreData In Swift
