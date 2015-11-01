@@ -38,7 +38,7 @@ public class SwCD {
     private static let ManagedObjectContextKey : String = "SwCDManagedObjectContextKey"
     
     private var modelName : String?
-    private var dbRootDirPath : String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+    private var dbRootDirPath : String = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true)[0]
     private var dbDirName : String = "SwCD"
     private var dbName : String = "SwCDDB"
     
