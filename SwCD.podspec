@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SwCD"
-  s.version          = "0.1.2"
+  s.version          = "0.1.3"
   s.summary          = "Lightweight CoreData library. written in Swift."
   s.homepage         = "https://github.com/xxxAIRINxxx/SwCD"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
