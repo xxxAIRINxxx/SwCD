@@ -19,13 +19,8 @@ class ViewController: UIViewController {
         SwCD.setup("DemoModel", dbRootDirPath: nil, dbDirName: "Demo", dbName: nil)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @IBAction func tapAdd() {
-        var item = SwCD.createEntity(Item.self)
+        let item = SwCD.createEntity(Item.self)
         item.identifier = NSUUID().UUIDString
         item.name = "item"
         item.created = NSDate()
@@ -34,7 +29,7 @@ class ViewController: UIViewController {
                 self.tableView.reloadData()
             } else {
                 if let _error = error {
-                    println(_error)
+                    print(_error)
                 }
             }
         })
@@ -49,7 +44,7 @@ class ViewController: UIViewController {
                     self.tableView.reloadData()
                 } else {
                     if let _error = error {
-                        println(_error)
+                        print(_error)
                     }
                 }
             })
@@ -62,7 +57,7 @@ class ViewController: UIViewController {
                 self.tableView.reloadData()
             } else {
                 if let _error = error {
-                    println(_error)
+                    print(_error)
                 }
             }
         })
@@ -75,7 +70,7 @@ class ViewController: UIViewController {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         
         let item = SwCD.all(Item.self, sortDescriptors: [NSSortDescriptor(key: "identifier", ascending: true)])[indexPath.row]
         cell.textLabel!.text = item.identifier
@@ -93,7 +88,7 @@ class ViewController: UIViewController {
                 self.tableView.reloadData()
             } else {
                 if let _error = error {
-                    println(_error)
+                    print(_error)
                 }
             }
         })
