@@ -180,7 +180,7 @@ public extension NSManagedObjectContext {
     func registerContextDidSaveNotification() {
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "contextWillSave:",
+            selector: #selector(NSManagedObjectContext.contextWillSave(_:)),
             name: NSManagedObjectContextDidSaveNotification,
             object: self)
     }
@@ -188,7 +188,7 @@ public extension NSManagedObjectContext {
     func obtainPermanentIDsBeforeSaving() {
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "contextWillSave:",
+            selector: #selector(NSManagedObjectContext.contextWillSave(_:)),
             name: NSManagedObjectContextWillSaveNotification,
             object: NSManagedObjectContext.rootSaveingContext())
     }
