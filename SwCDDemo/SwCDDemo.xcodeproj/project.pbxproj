@@ -84,9 +84,9 @@
 		C80971451B03199300D3CC69 = {
 			isa = PBXGroup;
 			children = (
+				C8BF83B31B031F1300677EE9 /* SwCD.xcodeproj */,
 				C80971501B03199300D3CC69 /* SwCDDemo */,
 				C809714F1B03199300D3CC69 /* Products */,
-				C8BF83B31B031F1300677EE9 /* SwCD.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
